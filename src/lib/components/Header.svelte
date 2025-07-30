@@ -27,7 +27,7 @@
     </div>
 
     <div class="flex space-x-4 items-center">
-      <a href="#">Login</a>
+      <a href="/login">Login</a>
       <a href="/cart">Cart</a>
       <button
         class="px-10 py-3 bg-lime-500 text-white rounded-full hover:bg-lime-600 transition-colors duration-300"

@@ -1,9 +1,6 @@
-import type { RequestHandler } from '@sveltejs/kit';
-import Stripe from 'stripe';
-
-const stripe = new Stripe(import.meta.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2023-08-16'
-});
+import stripe from '$lib/server/stripe';
+import { json, type RequestHandler } from '@sveltejs/kit';
+import type Stripe from 'stripe';
 
 export const POST: RequestHandler = async ({ request }) => {
   const webhookSecret = import.meta.env.STRIPE_WEBHOOK_SECRET!;
@@ -19,9 +16,7 @@ export const POST: RequestHandler = async ({ request }) => {
       webhookSecret
     );
   } catch (err) {
-    return new Response(`Webhook Error: ${(err as Error).message}`, {
-      status: 400
-    });
+    return json({ error: (err as Error).message }, { status: 400 });
   }
 
   // Handle event types
@@ -42,5 +37,5 @@ export const POST: RequestHandler = async ({ request }) => {
       console.log(`Unhandled event type ${event.type}`);
   }
 
-  return new Response(JSON.stringify({ received: true }), { status: 200 });
+  return json({ received: true }, { status: 200 });
 };
